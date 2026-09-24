@@ -6,11 +6,13 @@ import org.openqa.selenium.WebDriver;
 
 public class OrderConfirmationPage extends BasePage {
 
+    private By overviewTitle = By.className("title");
     private By finishButton = By.id("finish");
     private By confirmationMessage = By.className("complete-header");
 
     public OrderConfirmationPage(WebDriver driver) {
         super(driver);
+        waitForVisible(overviewTitle);
     }
 
     public void clickFinish() {
