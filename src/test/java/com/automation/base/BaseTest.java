@@ -1,8 +1,6 @@
 package com.automation.base;
 
-import java.io.FileInputStream;
 import java.io.IOException;
-import java.util.Properties;
 
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
@@ -10,24 +8,19 @@ import org.openqa.selenium.chrome.ChromeOptions;
 import org.testng.annotations.AfterMethod;
 import org.testng.annotations.BeforeMethod;
 
+import com.automation.utils.ConfigReader;
+
 public class BaseTest {
 
     protected WebDriver driver;
-    protected Properties properties;
+    protected ConfigReader configReader;
 
     @BeforeMethod
     public void setUp() throws IOException {
 
-        properties = new Properties();
+        configReader = new ConfigReader();
 
-        FileInputStream file = new FileInputStream(
-                "src/test/resources/config.properties"
-        );
-
-        properties.load(file);
-        file.close();
-
-        String browser = properties.getProperty("browser");
+        String browser = configReader.getProperty("browser");
 
         if (browser.equalsIgnoreCase("chrome")) {
 
@@ -46,7 +39,7 @@ public class BaseTest {
 
         driver.manage().window().maximize();
 
-        driver.get(properties.getProperty("url"));
+        driver.get(configReader.getProperty("url"));
     }
 
     @AfterMethod
@@ -57,7 +50,6 @@ public class BaseTest {
         }
     }
 
-    // Allows the TestNG listener to access the WebDriver
     public WebDriver getDriver() {
         return driver;
     }
