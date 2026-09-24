@@ -16,9 +16,9 @@ public class OrderConfirmationPage extends BasePage {
     }
 
     public void clickFinish() {
-        waitForClickable(finishButton);
-        driver.findElement(finishButton).click();
-    }
+    waitForClickable(finishButton);
+    driver.findElement(finishButton).click();
+}
 
     public String getConfirmationMessage() {
         waitForVisible(confirmationMessage);

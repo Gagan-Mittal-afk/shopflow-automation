@@ -1,6 +1,8 @@
 package com.automation.base;
 
 import java.io.IOException;
+import java.util.HashMap;
+import java.util.Map;
 
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
@@ -27,18 +29,24 @@ public class BaseTest {
             ChromeOptions options = new ChromeOptions();
 
             options.addArguments("--disable-features=PasswordLeakDetection");
+            options.addArguments("--disable-save-password-bubble");
+
+            Map<String, Object> prefs = new HashMap<>();
+            prefs.put("credentials_enable_service", false);
+            prefs.put("profile.password_manager_enabled", false);
+            prefs.put("autofill.profile_enabled", false);
+
+            options.setExperimentalOption("prefs", prefs);
 
             driver = new ChromeDriver(options);
 
         } else {
-
             throw new IllegalArgumentException(
                     "Browser not supported: " + browser
             );
         }
 
         driver.manage().window().maximize();
-
         driver.get(configReader.getProperty("url"));
     }
 

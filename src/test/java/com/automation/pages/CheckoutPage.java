@@ -3,6 +3,9 @@ package com.automation.pages;
 import com.automation.base.BasePage;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.WebElement;
+import org.openqa.selenium.interactions.Actions;
+import org.openqa.selenium.support.ui.ExpectedConditions;
 
 public class CheckoutPage extends BasePage {
 
@@ -16,18 +19,15 @@ public class CheckoutPage extends BasePage {
     }
 
     public void enterFirstName(String firstName) {
-        waitForVisible(firstNameField);
-        driver.findElement(firstNameField).sendKeys(firstName);
+        enterText(firstNameField, firstName);
     }
 
     public void enterLastName(String lastName) {
-        waitForVisible(lastNameField);
-        driver.findElement(lastNameField).sendKeys(lastName);
+        enterText(lastNameField, lastName);
     }
 
     public void enterPostalCode(String postalCode) {
-        waitForVisible(postalCodeField);
-        driver.findElement(postalCodeField).sendKeys(postalCode);
+        enterText(postalCodeField, postalCode);
     }
 
     public void clickContinue() {
@@ -44,5 +44,18 @@ public class CheckoutPage extends BasePage {
         enterLastName(lastName);
         enterPostalCode(postalCode);
         clickContinue();
+    }
+
+    private void enterText(By locator, String value) {
+        waitForVisible(locator);
+        WebElement field = driver.findElement(locator);
+        field.clear();
+
+        new Actions(driver)
+                .click(field)
+                .sendKeys(value)
+                .perform();
+
+        wait.until(ExpectedConditions.attributeToBe(locator, "value", value));
     }
 }
