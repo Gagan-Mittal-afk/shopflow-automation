@@ -3,7 +3,7 @@ package com.automation.base;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.util.Properties;
-
+import org.openqa.selenium.chrome.ChromeOptions;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.testng.annotations.AfterMethod;
@@ -30,14 +30,19 @@ public class BaseTest {
         // Read browser from config
         String browser = properties.getProperty("browser");
 
-        // Launch browser
-        if (browser.equalsIgnoreCase("chrome")) {
-            driver = new ChromeDriver();
-        } else {
-            throw new IllegalArgumentException(
-                    "Browser not supported: " + browser
-            );
-        }
+if (browser.equalsIgnoreCase("chrome")) {
+
+    ChromeOptions options = new ChromeOptions();
+
+    options.addArguments("--disable-features=PasswordLeakDetection");
+
+    driver = new ChromeDriver(options);
+
+} else {
+    throw new IllegalArgumentException(
+            "Browser not supported: " + browser
+    );
+}
 
         driver.manage().window().maximize();
 
