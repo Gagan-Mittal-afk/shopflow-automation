@@ -2,23 +2,26 @@ package com.automation.pages;
 
 import com.automation.base.BasePage;
 import org.openqa.selenium.By;
+import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.WebDriver;
 
 public class OrderConfirmationPage extends BasePage {
 
-    private By overviewTitle = By.className("title");
     private By finishButton = By.id("finish");
     private By confirmationMessage = By.className("complete-header");
 
     public OrderConfirmationPage(WebDriver driver) {
         super(driver);
-        waitForVisible(overviewTitle);
+        waitForClickable(finishButton);
     }
 
     public void clickFinish() {
-    waitForClickable(finishButton);
-    driver.findElement(finishButton).click();
-}
+        waitForClickable(finishButton);
+        ((JavascriptExecutor) driver).executeScript(
+                "arguments[0].click();",
+                driver.findElement(finishButton)
+        );
+    }
 
     public String getConfirmationMessage() {
         waitForVisible(confirmationMessage);

@@ -2,9 +2,9 @@ package com.automation.pages;
 
 import com.automation.base.BasePage;
 import org.openqa.selenium.By;
+import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
-import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 
 public class CheckoutPage extends BasePage {
@@ -32,7 +32,11 @@ public class CheckoutPage extends BasePage {
 
     public void clickContinue() {
         waitForClickable(continueButton);
-        driver.findElement(continueButton).click();
+        ((JavascriptExecutor) driver).executeScript(
+                "arguments[0].click();",
+                driver.findElement(continueButton)
+        );
+        wait.until(ExpectedConditions.urlContains("checkout-step-two"));
     }
 
     public void enterCustomerInformation(
@@ -48,14 +52,21 @@ public class CheckoutPage extends BasePage {
 
     private void enterText(By locator, String value) {
         waitForVisible(locator);
+
         WebElement field = driver.findElement(locator);
-        field.clear();
+        ((JavascriptExecutor) driver).executeScript(
+                "const input = arguments[0];"
+                        + "const value = arguments[1];"
+                        + "Object.getOwnPropertyDescriptor(HTMLInputElement.prototype, 'value')"
+                        + ".set.call(input, value);"
+                        + "input.dispatchEvent(new Event('input', {bubbles: true}));"
+                        + "input.dispatchEvent(new Event('change', {bubbles: true}));",
+                field,
+                value
+        );
 
-        new Actions(driver)
-                .click(field)
-                .sendKeys(value)
-                .perform();
-
-        wait.until(ExpectedConditions.attributeToBe(locator, "value", value));
+        wait.until(
+                ExpectedConditions.attributeToBe(locator, "value", value)
+        );
     }
 }
