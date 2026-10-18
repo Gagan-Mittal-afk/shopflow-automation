@@ -17,7 +17,7 @@ public class BaseTest {
     protected WebDriver driver;
     protected ConfigReader configReader;
 
-    @BeforeMethod
+    @BeforeMethod(alwaysRun = true)
     public void setUp() throws IOException {
 
         configReader = new ConfigReader();
@@ -50,13 +50,14 @@ public class BaseTest {
         driver.get(configReader.getProperty("url"));
     }
 
-    @AfterMethod
-    public void tearDown() {
-
-        if (driver != null) {
-            driver.quit();
-        }
+   @AfterMethod(alwaysRun = true)
+public void tearDown() {
+    
+    if (driver != null) {
+        driver.quit();
+        
     }
+}
 
     public WebDriver getDriver() {
         return driver;

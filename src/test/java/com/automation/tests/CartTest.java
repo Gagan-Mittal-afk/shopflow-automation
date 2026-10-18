@@ -10,7 +10,7 @@ import org.testng.annotations.Test;
 
 public class CartTest extends BaseTest {
 
-    @Test
+    @Test(groups = {"cart"})
     public void verifyProductInCart() {
 
         // Login

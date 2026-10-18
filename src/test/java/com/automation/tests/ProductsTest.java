@@ -9,7 +9,7 @@ import org.testng.annotations.Test;
 
 public class ProductsTest extends BaseTest {
 
-    @Test
+    @Test(groups = {"smoke"})
     public void verifyProductsPage() {
 
         LoginPage loginPage = new LoginPage(driver);

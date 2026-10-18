@@ -15,9 +15,10 @@ public class CartPage extends BasePage {
         super(driver);
     }
 
-    public String getCartItemName() {
-        return driver.findElement(cartItem).getText();
-    }
+   public String getCartItemName() {
+    waitForVisible(cartItem);
+    return driver.findElement(cartItem).getText();
+}
 
     public void clickCheckout() {
         waitForClickable(checkoutButton);

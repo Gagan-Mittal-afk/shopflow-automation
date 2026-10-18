@@ -3,14 +3,18 @@
 
 <suite name="Automation Suite">
 
-    <listeners>
-        <listener class-name="com.automation.listeners.ScreenshotListener"/>
-    </listeners>
+    <test name="Smoke Tests">
 
-    <test name="Selenium Tests">
+        <groups>
+            <run>
+                <include name="smoke"/>
+            </run>
+        </groups>
+
         <packages>
             <package name="com.automation.tests"/>
         </packages>
+
     </test>
 
 </suite>

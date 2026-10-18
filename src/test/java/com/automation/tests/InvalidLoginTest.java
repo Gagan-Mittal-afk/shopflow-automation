@@ -8,7 +8,7 @@ import org.testng.annotations.Test;
 
 public class InvalidLoginTest extends BaseTest {
 
-    @Test
+    @Test(groups = {"login"})
     public void verifyInvalidLogin() {
 
         LoginPage loginPage = new LoginPage(driver);
