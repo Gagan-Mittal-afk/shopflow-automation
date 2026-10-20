@@ -37,4 +37,13 @@ public class ProductsTest extends BaseTest {
         Assert.assertTrue(title.contains("Products"));
         Assert.assertNotNull(title);
     }
+
+    @Test(groups = {"smoke"}, dependsOnMethods = "verifyProductsPage")
+    public void verifyInventoryIsAvailableAfterValidUserChecks() {
+        LoginPage loginPage = new LoginPage(driver);
+        loginPage.login(configReader.getProperty("username"), configReader.getProperty("password"));
+
+        ProductsPage productsPage = new ProductsPage(driver);
+        Assert.assertEquals(productsPage.getProductsTitle(), "Products");
+    }
 }

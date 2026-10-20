@@ -18,10 +18,7 @@ public class CheckoutTest extends BaseTest {
         // Login
         LoginPage loginPage = new LoginPage(driver);
 
-        loginPage.login(
-                "standard_user",
-                "secret_sauce"
-        );
+        loginPage.login(configReader.getProperty("username"), configReader.getProperty("password"));
 
         // Open Products page
         ProductsPage productsPage = new ProductsPage(driver);
@@ -63,9 +60,8 @@ public class CheckoutTest extends BaseTest {
         confirmationPage.clickFinish();
 
         // Verify order confirmation
-        Assert.assertEquals(
-                confirmationPage.getConfirmationMessage(),
-                "Thank you for your order!"
-        );
+        String confirmationMessage = confirmationPage.getConfirmationMessage();
+        Assert.assertNotNull(confirmationMessage, "Order confirmation should be present");
+        Assert.assertEquals(confirmationMessage, "Thank you for your order!");
     }
 }

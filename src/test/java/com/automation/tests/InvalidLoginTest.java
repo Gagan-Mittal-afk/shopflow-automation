@@ -13,13 +13,12 @@ public class InvalidLoginTest extends BaseTest {
 
         LoginPage loginPage = new LoginPage(driver);
 
-        loginPage.login(
-                "standard_user",
-                "wrong_password"
-        );
+        loginPage.login(configReader.getProperty("username"), "wrong_password");
 
+        String errorMessage = loginPage.getErrorMessage();
+        Assert.assertFalse(errorMessage.isBlank(), "Invalid login must show a non-empty error");
         Assert.assertEquals(
-                loginPage.getErrorMessage(),
+                errorMessage,
                 "Epic sadface: Username and password do not match any user in this service"
         );
     }

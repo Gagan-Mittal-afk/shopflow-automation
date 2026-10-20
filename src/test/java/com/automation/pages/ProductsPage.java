@@ -15,14 +15,17 @@ public class ProductsPage extends BasePage {
     }
 
     public String getProductsTitle() {
+        waitForVisible(productsTitle);
         return driver.findElement(productsTitle).getText();
     }
 
     public void addBackpackToCart() {
+        waitForClickable(backpackAddButton);
         driver.findElement(backpackAddButton).click();
     }
 
     public void clickCart() {
+        waitForClickable(cartIcon);
         driver.findElement(cartIcon).click();
     }
 }

@@ -20,7 +20,7 @@ public class LoginTest extends BaseTest {
 
         // Login
         LoginPage loginPage = new LoginPage(driver);
-        loginPage.login("standard_user", "secret_sauce");
+        loginPage.login(configReader.getProperty("username"), configReader.getProperty("password"));
 
         // Verify Products page
         ProductsPage productsPage = new ProductsPage(driver);
@@ -62,9 +62,8 @@ OrderConfirmationPage confirmationPage =
 confirmationPage.clickFinish();
 
 // Verify order confirmation
-Assert.assertEquals(
-        confirmationPage.getConfirmationMessage(),
-        "Thank you for your order!"
-);
+        String confirmationMessage = confirmationPage.getConfirmationMessage();
+        Assert.assertNotNull(confirmationMessage, "Order confirmation should be present");
+        Assert.assertEquals(confirmationMessage, "Thank you for your order!");
     }
 }

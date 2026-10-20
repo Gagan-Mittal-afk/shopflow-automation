@@ -1,5 +1,9 @@
 target/
+.m2/
 .vscode/
 .idea/
 *.class
 screenshots/
+se-metadata.json
+*.log
+*.tmp

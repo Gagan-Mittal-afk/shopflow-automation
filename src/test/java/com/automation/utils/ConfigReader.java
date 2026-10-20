@@ -1,23 +1,24 @@
 package com.automation.utils;
 
-import java.io.FileInputStream;
 import java.io.IOException;
+import java.io.InputStream;
 import java.util.Properties;
 
 public class ConfigReader {
 
-    private Properties properties;
+    private final Properties properties;
 
     public ConfigReader() throws IOException {
 
         properties = new Properties();
 
-        FileInputStream file = new FileInputStream(
-                "src/test/resources/config.properties"
-        );
-
-        properties.load(file);
-        file.close();
+        try (InputStream inputStream = ConfigReader.class.getClassLoader()
+                .getResourceAsStream("config.properties")) {
+            if (inputStream == null) {
+                throw new IOException("config.properties was not found on the test classpath");
+            }
+            properties.load(inputStream);
+        }
     }
 
     public String getProperty(String key) {

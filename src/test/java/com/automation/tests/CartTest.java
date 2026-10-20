@@ -16,10 +16,7 @@ public class CartTest extends BaseTest {
         // Login
         LoginPage loginPage = new LoginPage(driver);
 
-        loginPage.login(
-                "standard_user",
-                "secret_sauce"
-        );
+        loginPage.login(configReader.getProperty("username"), configReader.getProperty("password"));
 
         // Open Products page
         ProductsPage productsPage = new ProductsPage(driver);
