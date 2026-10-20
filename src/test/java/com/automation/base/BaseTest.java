@@ -9,6 +9,8 @@ import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.chrome.ChromeOptions;
 import org.testng.annotations.AfterMethod;
 import org.testng.annotations.BeforeMethod;
+import org.testng.annotations.Optional;
+import org.testng.annotations.Parameters;
 
 import com.automation.utils.ConfigReader;
 
@@ -18,11 +20,10 @@ public class BaseTest {
     protected ConfigReader configReader;
 
     @BeforeMethod(alwaysRun = true)
-    public void setUp() throws IOException {
+    @Parameters("browser")
+    public void setUp(@Optional("chrome") String browser) throws IOException {
 
         configReader = new ConfigReader();
-
-        String browser = configReader.getProperty("browser");
 
         if (browser.equalsIgnoreCase("chrome")) {
 
@@ -50,14 +51,12 @@ public class BaseTest {
         driver.get(configReader.getProperty("url"));
     }
 
-   @AfterMethod(alwaysRun = true)
-public void tearDown() {
-    
-    if (driver != null) {
-        driver.quit();
-        
+    @AfterMethod(alwaysRun = true)
+    public void tearDown() {
+        if (driver != null) {
+            driver.quit();
+        }
     }
-}
 
     public WebDriver getDriver() {
         return driver;

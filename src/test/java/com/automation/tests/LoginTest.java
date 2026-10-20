@@ -12,7 +12,10 @@ import org.testng.annotations.Test;
 
 public class LoginTest extends BaseTest {
 
-    @Test(groups = {"smoke"})
+    @Test(
+    groups = {"smoke"},
+    priority = 1
+)
     public void verifySuccessfulLoginAndAddProduct() {
 
         // Login

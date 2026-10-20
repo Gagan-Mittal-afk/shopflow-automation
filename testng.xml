@@ -2,8 +2,13 @@
 <!DOCTYPE suite SYSTEM "https://testng.org/testng-1.0.dtd">
 
 <suite name="Automation Suite">
+<listeners>
+    <listener class-name="com.automation.listeners.ScreenshotListener"/>
+</listeners>
 
     <test name="Smoke Tests">
+
+        <parameter name="browser" value="chrome"/>
 
         <groups>
             <run>

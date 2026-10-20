@@ -14,11 +14,16 @@ public class ScreenshotListener implements ITestListener {
 
         Object testClass = result.getInstance();
 
-        WebDriver driver = ((BaseTest) testClass).getDriver();
+        if (testClass instanceof BaseTest) {
 
-        ScreenshotUtil.captureScreenshot(
-                driver,
-                result.getMethod().getMethodName()
-        );
+            WebDriver driver = ((BaseTest) testClass).getDriver();
+
+            if (driver != null) {
+                ScreenshotUtil.captureScreenshot(
+                        driver,
+                        result.getMethod().getMethodName()
+                );
+            }
+        }
     }
 }
