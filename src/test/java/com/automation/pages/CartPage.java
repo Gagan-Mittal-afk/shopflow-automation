@@ -10,6 +10,8 @@ public class CartPage extends BasePage {
 
     private By cartItem = By.className("inventory_item_name");
     private By checkoutButton = By.id("checkout");
+    private By removeBackpackButton = By.id("remove-sauce-labs-backpack");
+    private By continueShoppingButton = By.id("continue-shopping");
 
     public CartPage(WebDriver driver) {
         super(driver);
@@ -27,5 +29,25 @@ public class CartPage extends BasePage {
                 driver.findElement(checkoutButton)
         );
         wait.until(ExpectedConditions.urlContains("checkout-step-one"));
+    }
+
+    public int getCartItemCount() {
+        return driver.findElements(cartItem).size();
+    }
+
+    public void removeBackpack() {
+        waitForClickable(removeBackpackButton);
+        driver.findElement(removeBackpackButton).click();
+        wait.until(ExpectedConditions.invisibilityOfElementLocated(removeBackpackButton));
+    }
+
+    public boolean isCartEmpty() {
+        return driver.findElements(cartItem).isEmpty();
+    }
+
+    public void continueShopping() {
+        waitForClickable(continueShoppingButton);
+        driver.findElement(continueShoppingButton).click();
+        wait.until(ExpectedConditions.urlContains("inventory.html"));
     }
 }

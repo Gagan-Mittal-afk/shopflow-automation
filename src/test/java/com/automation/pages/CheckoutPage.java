@@ -13,6 +13,7 @@ public class CheckoutPage extends BasePage {
     private By lastNameField = By.id("last-name");
     private By postalCodeField = By.id("postal-code");
     private By continueButton = By.id("continue");
+    private By errorMessage = By.cssSelector("[data-test='error']");
 
     public CheckoutPage(WebDriver driver) {
         super(driver);
@@ -37,6 +38,17 @@ public class CheckoutPage extends BasePage {
                 driver.findElement(continueButton)
         );
         wait.until(ExpectedConditions.urlContains("checkout-step-two"));
+    }
+
+    public void submitWithoutCustomerInformation() {
+        waitForClickable(continueButton);
+        driver.findElement(continueButton).click();
+        waitForVisible(errorMessage);
+    }
+
+    public String getErrorMessage() {
+        waitForVisible(errorMessage);
+        return driver.findElement(errorMessage).getText();
     }
 
     public void enterCustomerInformation(

@@ -40,4 +40,9 @@ public class LoginPage extends BasePage {
         waitForVisible(errorMessage);
         return driver.findElement(errorMessage).getText();
     }
+
+    public boolean isLoginButtonDisplayed() {
+        waitForVisible(loginButton);
+        return driver.findElement(loginButton).isDisplayed();
+    }
 }

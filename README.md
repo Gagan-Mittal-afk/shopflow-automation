@@ -35,13 +35,13 @@ src/test
 
 ## Automated coverage
 
-- Successful end-to-end purchase: login, backpack, cart, customer information, and confirmation
-- Invalid-login validation
-- Data-driven product-page access for `standard_user` and `problem_user`
-- Cart validation and checkout confirmation
+- Fifteen UI TestNG executions covering successful, invalid, locked-out, and data-driven valid-user login paths
+- Product inventory validation, low-to-high sorting, product details, add-to-cart, and removal
+- Cart contents, cart removal, continue shopping, checkout validation, checkout completion, and order confirmation
+- Menu visibility and logout
 - A Gherkin login scenario with `Given`, `When`, and `Then`
 
-The TestNG tests demonstrate groups, priorities, parameters, data providers, meaningful assertions, and a safe dependency: inventory validation runs only after valid-user product checks pass. Each test still creates its own browser session, so no browser state is shared.
+The TestNG tests demonstrate `smoke`, `login`, `products`, `cart`, `checkout`, `navigation`, and `regression` groups; priorities; parameters; data providers; assertions; and a safe dependency: inventory validation runs only after valid-user product checks pass. Each test still creates its own browser session, so no browser state is shared.
 
 ## Prerequisites
 

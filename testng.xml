@@ -15,9 +15,14 @@
         <classes>
             <class name="com.automation.tests.LoginTest"/>
             <class name="com.automation.tests.InvalidLoginTest"/>
+            <class name="com.automation.tests.LockedOutLoginTest"/>
             <class name="com.automation.tests.ProductsTest"/>
+            <class name="com.automation.tests.ProductInteractionsTest"/>
             <class name="com.automation.tests.CartTest"/>
+            <class name="com.automation.tests.CartWorkflowTest"/>
             <class name="com.automation.tests.CheckoutTest"/>
+            <class name="com.automation.tests.CheckoutValidationTest"/>
+            <class name="com.automation.tests.NavigationTest"/>
         </classes>
 
     </test>
