@@ -2,7 +2,9 @@ package com.automation.pages;
 
 import com.automation.base.BasePage;
 import org.openqa.selenium.By;
+import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.support.ui.ExpectedConditions;
 
 /** SauceDemo's application navigation menu. */
 public class NavigationMenu extends BasePage {
@@ -27,6 +29,7 @@ public class NavigationMenu extends BasePage {
 
     public void logout() {
         waitForClickable(logoutLink);
-        driver.findElement(logoutLink).click();
+        ((JavascriptExecutor) driver).executeScript("arguments[0].click();", driver.findElement(logoutLink));
+        wait.until(ExpectedConditions.urlToBe("https://www.saucedemo.com/"));
     }
 }
