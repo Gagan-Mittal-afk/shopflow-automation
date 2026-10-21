@@ -21,7 +21,8 @@ public class BaseTest {
 
         configReader = new ConfigReader();
 
-        driver = DriverFactory.create(browser);
+        String configuredBrowser = System.getProperty("browser", browser);
+        driver = DriverFactory.create(configuredBrowser);
 
         driver.manage().window().maximize();
         driver.get(configReader.getProperty("url"));

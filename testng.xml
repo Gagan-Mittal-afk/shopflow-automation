@@ -1,12 +1,14 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE suite SYSTEM "https://testng.org/testng-1.0.dtd">
 
-<suite name="ShopFlow Automation Suite" verbose="1">
+<suite name="ShopFlow Automation Suite" verbose="1" parallel="none" thread-count="1">
     <listeners>
         <listener class-name="com.automation.listeners.ScreenshotListener"/>
+        <listener class-name="com.automation.listeners.ExtentReportListener"/>
     </listeners>
 
-    <test name="TestNG Regression Tests">
+    <!-- UI classes are independent and each receives a separate BaseTest WebDriver instance. -->
+    <test name="TestNG UI Regression Tests" parallel="classes" thread-count="3">
 
         <parameter name="browser" value="chrome"/>
 
@@ -20,9 +22,17 @@
 
     </test>
 
-    <test name="Cucumber BDD Tests">
+    <!-- Kept sequential to avoid sharing Cucumber scenario state. -->
+    <test name="Cucumber BDD Tests" parallel="none" thread-count="1">
         <classes>
             <class name="com.automation.runners.CucumberTestRunner"/>
+        </classes>
+    </test>
+
+    <!-- Kept sequential because the public practice API is shared and simulated. -->
+    <test name="REST Assured API Tests" parallel="none" thread-count="1">
+        <classes>
+            <class name="com.automation.api.tests.JsonPlaceholderApiTest"/>
         </classes>
     </test>
 

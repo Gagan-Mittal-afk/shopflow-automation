@@ -1,0 +1,80 @@
+{
+  "info": {
+    "_postman_id": "6b902b4c-8257-4f5b-ae13-a9dc19be1907",
+    "name": "ShopFlow API Practice - JSONPlaceholder",
+    "description": "REST API practice for ShopFlow. JSONPlaceholder mutations are simulated and not persisted.",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "variable": [
+    {"key": "baseUrl", "value": "https://jsonplaceholder.typicode.com", "type": "string"},
+    {"key": "postId", "value": "1", "type": "string"},
+    {"key": "userId", "value": "1", "type": "string"}
+  ],
+  "item": [
+    {
+      "name": "API Basics",
+      "item": [
+        {
+          "name": "GET Requests",
+          "item": [
+            {
+              "name": "Get all posts",
+              "event": [{"listen": "test", "script": {"type": "text/javascript", "exec": ["pm.test('Status is 200', function () { pm.response.to.have.status(200); });", "pm.test('Response is a non-empty array', function () { pm.expect(pm.response.json()).to.be.an('array').that.is.not.empty; });", "pm.test('Response header is JSON', function () { pm.expect(pm.response.headers.get('Content-Type')).to.include('application/json'); });"]}}],
+              "request": {"method": "GET", "header": [{"key": "Accept", "value": "application/json"}], "url": "{{baseUrl}}/posts"}
+            },
+            {
+              "name": "Get post by path parameter",
+              "event": [{"listen": "test", "script": {"type": "text/javascript", "exec": ["pm.test('Status is 200', function () { pm.response.to.have.status(200); });", "pm.test('Response matches path parameter', function () { pm.expect(pm.response.json().id).to.eql(Number(pm.collectionVariables.get('postId'))); });", "pm.test('Response header is JSON', function () { pm.expect(pm.response.headers.get('Content-Type')).to.include('application/json'); });"]}}],
+              "request": {"method": "GET", "header": [{"key": "Accept", "value": "application/json"}], "url": "{{baseUrl}}/posts/{{postId}}"}
+            },
+            {
+              "name": "Get posts by query parameter",
+              "event": [{"listen": "test", "script": {"type": "text/javascript", "exec": ["pm.test('Status is 200', function () { pm.response.to.have.status(200); });", "pm.test('Every post matches userId', function () { var expected = Number(pm.collectionVariables.get('userId')); pm.response.json().forEach(function (post) { pm.expect(post.userId).to.eql(expected); }); });", "pm.test('Response header is JSON', function () { pm.expect(pm.response.headers.get('Content-Type')).to.include('application/json'); });"]}}],
+              "request": {"method": "GET", "header": [{"key": "Accept", "value": "application/json"}], "url": "{{baseUrl}}/posts?userId={{userId}}"}
+            }
+          ]
+        },
+        {
+          "name": "POST Requests",
+          "item": [
+            {
+              "name": "Create simulated post",
+              "event": [{"listen": "test", "script": {"type": "text/javascript", "exec": ["pm.test('Status is 201', function () { pm.response.to.have.status(201); });", "pm.test('Created response has an id and requested title', function () { var body = pm.response.json(); pm.expect(body).to.have.property('id'); pm.expect(body.title).to.eql('API practice post'); });", "pm.test('Response header is JSON', function () { pm.expect(pm.response.headers.get('Content-Type')).to.include('application/json'); });"]}}],
+              "request": {"method": "POST", "header": [{"key": "Content-Type", "value": "application/json"}, {"key": "Accept", "value": "application/json"}], "body": {"mode": "raw", "raw": "{\n  \"title\": \"API practice post\",\n  \"body\": \"Created as a simulated JSONPlaceholder request.\",\n  \"userId\": 1\n}", "options": {"raw": {"language": "json"}}}, "url": "{{baseUrl}}/posts"}
+            }
+          ]
+        },
+        {
+          "name": "PUT Requests",
+          "item": [
+            {
+              "name": "Update simulated post",
+              "event": [{"listen": "test", "script": {"type": "text/javascript", "exec": ["pm.test('Status is 200', function () { pm.response.to.have.status(200); });", "pm.test('Updated response has replacement title', function () { pm.expect(pm.response.json().title).to.eql('Updated API practice post'); });", "pm.test('Response header is JSON', function () { pm.expect(pm.response.headers.get('Content-Type')).to.include('application/json'); });"]}}],
+              "request": {"method": "PUT", "header": [{"key": "Content-Type", "value": "application/json"}, {"key": "Accept", "value": "application/json"}], "body": {"mode": "raw", "raw": "{\n  \"id\": 1,\n  \"title\": \"Updated API practice post\",\n  \"body\": \"Updated as a simulated JSONPlaceholder request.\",\n  \"userId\": 1\n}", "options": {"raw": {"language": "json"}}}, "url": "{{baseUrl}}/posts/{{postId}}"}
+            }
+          ]
+        },
+        {
+          "name": "DELETE Requests",
+          "item": [
+            {
+              "name": "Delete simulated post",
+              "event": [{"listen": "test", "script": {"type": "text/javascript", "exec": ["pm.test('Status is 200', function () { pm.response.to.have.status(200); });", "pm.test('Response header is JSON', function () { pm.expect(pm.response.headers.get('Content-Type')).to.include('application/json'); });"]}}],
+              "request": {"method": "DELETE", "header": [{"key": "Accept", "value": "application/json"}], "url": "{{baseUrl}}/posts/{{postId}}"}
+            }
+          ]
+        },
+        {
+          "name": "Negative/Status Code Tests",
+          "item": [
+            {
+              "name": "Invalid endpoint returns 404",
+              "event": [{"listen": "test", "script": {"type": "text/javascript", "exec": ["pm.test('Status is 404', function () { pm.response.to.have.status(404); });", "pm.test('Response is a client error', function () { pm.expect(pm.response.code).to.be.within(400, 499); });"]}}],
+              "request": {"method": "GET", "header": [{"key": "Accept", "value": "application/json"}], "url": "{{baseUrl}}/invalid-endpoint"}
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

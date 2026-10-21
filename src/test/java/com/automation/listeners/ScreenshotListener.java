@@ -12,6 +12,10 @@ public class ScreenshotListener implements ITestListener {
     @Override
     public void onTestFailure(ITestResult result) {
 
+        if (result.getAttribute("screenshotPath") != null) {
+            return;
+        }
+
         Object testClass = result.getInstance();
 
         if (testClass instanceof BaseTest) {
@@ -19,10 +23,14 @@ public class ScreenshotListener implements ITestListener {
             WebDriver driver = ((BaseTest) testClass).getDriver();
 
             if (driver != null) {
-                ScreenshotUtil.captureScreenshot(
+                String screenshotPath = ScreenshotUtil.captureScreenshot(
                         driver,
                         result.getMethod().getMethodName()
                 );
+
+                if (screenshotPath != null) {
+                    result.setAttribute("screenshotPath", screenshotPath);
+                }
             }
         }
     }

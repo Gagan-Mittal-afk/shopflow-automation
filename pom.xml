@@ -15,6 +15,7 @@
         <maven.compiler.source>17</maven.compiler.source>
         <maven.compiler.target>17</maven.compiler.target>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+        <browser>chrome</browser>
     </properties>
 
     <dependencies>
@@ -48,6 +49,28 @@
             <scope>test</scope>
         </dependency>
 
+        <!-- REST API test automation -->
+        <dependency>
+            <groupId>io.rest-assured</groupId>
+            <artifactId>rest-assured</artifactId>
+            <version>5.5.5</version>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>com.fasterxml.jackson.core</groupId>
+            <artifactId>jackson-databind</artifactId>
+            <version>2.18.3</version>
+            <scope>test</scope>
+        </dependency>
+
+        <!-- HTML test reporting -->
+        <dependency>
+            <groupId>com.aventstack</groupId>
+            <artifactId>extentreports</artifactId>
+            <version>5.1.2</version>
+            <scope>test</scope>
+        </dependency>
+
     </dependencies>
 
     <build>
@@ -75,6 +98,7 @@
                     </suiteXmlFiles>
                     <systemPropertyVariables>
                         <cucumber.publish.quiet>true</cucumber.publish.quiet>
+                        <browser>${browser}</browser>
                     </systemPropertyVariables>
                 </configuration>
             </plugin>
