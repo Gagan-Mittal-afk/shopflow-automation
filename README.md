@@ -1,10 +1,10 @@
 # ShopFlow Automation
 
-ShopFlow Automation is a Java 17 Selenium framework that validates SauceDemo's login, product, cart, checkout, and order-confirmation journeys. It is structured with the Page Object Model and runs its complete TestNG and Cucumber suite with one Maven command.
+ShopFlow Automation is a Java 17 Selenium automation framework that validates SauceDemo's login, product, cart, checkout, and order-confirmation journeys. It is structured with the Page Object Model and runs its complete TestNG, Cucumber, and REST Assured suite with one Maven command.
 
 ## Application under test
 
-[SauceDemo](https://www.saucedemo.com/)
+SauceDemo: https://www.saucedemo.com/
 
 ## Technologies
 
@@ -15,95 +15,417 @@ ShopFlow Automation is a Java 17 Selenium framework that validates SauceDemo's l
 - REST Assured 5.5.5
 - ExtentReports 5.1.2
 - Maven and Maven Surefire
+- Hamcrest
+- JSONPath
+- Postman
+- JSONPlaceholder REST API
 
 ## Framework architecture
 
-```
-src/test
-├── java/com/automation
-│   ├── base/             # shared page and TestNG test setup
-│   ├── pages/            # reusable SauceDemo page objects
-│   ├── tests/            # TestNG regression tests
-│   ├── stepdefinitions/  # Cucumber hooks and steps
-│   ├── runners/          # Cucumber TestNG runner
-│   ├── listeners/        # failure screenshot listener
-│   └── utils/            # configuration, driver, and screenshot helpers
-└── resources
-    ├── config.properties
-    └── features/login.feature
-```
+shopflow-automation/
+├── .gitignore
+├── pom.xml
+├── README.md
+├── se-metadata.json
+├── testng.xml
+│
+├── api/
+│   └── API_PRACTICE.md
+│
+├── postman/
+│   └── ShopFlow-API-Practice.postman_collection.json
+│
+└── src/
+    ├── main/
+    │   └── java/
+    │
+    └── test/
+        ├── java/
+        │   └── com/
+        │       └── automation/
+        │           ├── api/
+        │           │   ├── base/
+        │           │   │   └── ApiConfig.java
+        │           │   ├── models/
+        │           │   │   └── Post.java
+        │           │   └── tests/
+        │           │       └── JsonPlaceholderApiTest.java
+        │           │
+        │           ├── base/
+        │           │   ├── BasePage.java
+        │           │   └── BaseTest.java
+        │           │
+        │           ├── listeners/
+        │           │   ├── ExtentReportListener.java
+        │           │   ├── ExtentReportManager.java
+        │           │   └── ScreenshotListener.java
+        │           │
+        │           ├── pages/
+        │           │   ├── CartPage.java
+        │           │   ├── CheckoutPage.java
+        │           │   ├── GooglePage.java
+        │           │   ├── LoginPage.java
+        │           │   ├── NavigationMenu.java
+        │           │   ├── OrderConfirmationPage.java
+        │           │   ├── ProductDetailsPage.java
+        │           │   └── ProductsPage.java
+        │           │
+        │           ├── runners/
+        │           │   └── CucumberTestRunner.java
+        │           │
+        │           ├── stepdefinitions/
+        │           │   ├── CucumberDriverContext.java
+        │           │   ├── CucumberHooks.java
+        │           │   └── LoginSteps.java
+        │           │
+        │           ├── tests/
+        │           │   ├── CartTest.java
+        │           │   ├── CartWorkflowTest.java
+        │           │   ├── CheckoutTest.java
+        │           │   ├── CheckoutValidationTest.java
+        │           │   ├── InvalidLoginTest.java
+        │           │   ├── LockedOutLoginTest.java
+        │           │   ├── LoginTest.java
+        │           │   ├── NavigationTest.java
+        │           │   ├── ProductInteractionsTest.java
+        │           │   └── ProductsTest.java
+        │           │
+        │           └── utils/
+        │               ├── ConfigReader.java
+        │               ├── DriverFactory.java
+        │               └── ScreenshotUtil.java
+        │
+        └── resources/
+            ├── config.properties
+            └── features/
+                └── login.feature
 
 ## Automated coverage
 
-- Fifteen UI TestNG executions covering successful, invalid, locked-out, and data-driven valid-user login paths
-- Product inventory validation, low-to-high sorting, product details, add-to-cart, and removal
-- Cart contents, cart removal, continue shopping, checkout validation, checkout completion, and order confirmation
-- Menu visibility and logout
-- A Gherkin login scenario with `Given`, `When`, and `Then`
+- Successful login
+- Invalid login
+- Locked-out user validation
+- Data-driven valid-user login scenarios
+- Product inventory validation
+- Product sorting
+- Product details
+- Add to cart
+- Remove from cart
+- Cart contents
+- Continue shopping
+- Checkout validation
+- Checkout completion
+- Order confirmation
+- Navigation menu
+- Logout
 
-The TestNG tests demonstrate `smoke`, `login`, `products`, `cart`, `checkout`, `navigation`, and `regression` groups; priorities; parameters; data providers; assertions; and a safe dependency: inventory validation runs only after valid-user product checks pass. Each test still creates its own browser session, so no browser state is shared.
+The TestNG tests demonstrate smoke, login, products, cart, checkout, navigation, and regression groups; priorities; parameters; data providers; assertions; and test dependencies.
+
+Each Selenium test creates its own browser session, so browser state is not shared between tests.
+
+## Page Object Model
+
+The UI automation follows the Page Object Model to keep locators and page interactions separate from test logic.
+
+LoginPage
+    ↓
+ProductsPage
+    ↓
+ProductDetailsPage
+    ↓
+CartPage
+    ↓
+CheckoutPage
+    ↓
+OrderConfirmationPage
+
+BasePage provides common page-level functionality, while BaseTest manages the TestNG browser lifecycle.
+
+NavigationMenu provides reusable navigation functionality.
+
+## Cucumber / BDD
+
+The project includes a Cucumber BDD login scenario using Gherkin.
+
+Feature:
+
+src/test/resources/features/login.feature
+
+Step definitions:
+
+src/test/java/com/automation/stepdefinitions/
+
+- CucumberDriverContext.java
+- CucumberHooks.java
+- LoginSteps.java
+
+Runner:
+
+src/test/java/com/automation/runners/CucumberTestRunner.java
+
+The scenario follows the Gherkin structure:
+
+Given
+When
+Then
+
+## API Testing & Postman
+
+The API practice material is deliberately separate from the UI framework:
+
+- api/API_PRACTICE.md
+- postman/ShopFlow-API-Practice.postman_collection.json
+
+The API practice uses JSONPlaceholder: https://jsonplaceholder.typicode.com/, a public fake REST API. Its write operations are simulated and do not modify persistent production data.
+
+The Postman collection demonstrates:
+
+- Collection GET
+- Single-resource GET
+- Path parameters
+- Query parameters
+- POST requests
+- PUT requests
+- DELETE requests
+- Request headers
+- JSON request payloads
+- Response-body checks
+- Response-header checks
+- Negative 404 testing
+- Collection variables
+- Postman test scripts
+
+Collection variables:
+
+- {{baseUrl}}
+- {{postId}}
+- {{userId}}
+
+CRUD operations are demonstrated using:
+
+- Create → POST
+- Read → GET
+- Update → PUT
+- Delete → DELETE
+
+## REST Assured API Automation
+
+The REST Assured TestNG suite automates the same JSONPlaceholder scenarios from Java.
+
+REST Assured uses BDD-style:
+
+given()
+    .when()
+    .then();
+
+given() prepares the request, when() invokes the HTTP method, and then() verifies the response.
+
+Shared API configuration is provided through:
+
+com.automation.api.base.ApiConfig
+
+The API automation demonstrates:
+
+- Base URI configuration
+- Request specifications
+- Response specifications
+- Path parameters
+- Query parameters
+- Request logging
+- Failure logging
+- Status-code assertions
+- Response-body assertions
+- Response-header assertions
+- Hamcrest matchers
+- JSONPath extraction
+- Serialization
+- Deserialization
+
+The Post POJO demonstrates serialization of Java objects into JSON and deserialization of JSON responses into Java objects.
+
+## HTTP status codes
+
+The API practice covers the major HTTP response families:
+
+- 1xx Informational
+- 2xx Success
+- 3xx Redirection
+- 4xx Client Error
+- 5xx Server Error
+
+The implemented examples validate:
+
+- 200 OK
+- 201 Created
+- 404 Not Found
+
+## Authentication
+
+JSONPlaceholder does not provide a suitable authentication workflow for this project, so Basic Authentication and OAuth are not artificially simulated or supplied with invented credentials.
+
+For reference, REST Assured normally supports:
+
+auth().basic(username, password);
+
+for Basic Authentication and:
+
+auth().oauth2(token);
+
+for OAuth 2.0 bearer-token authentication using securely supplied credentials or tokens.
+
+XML payload support is likewise not demonstrated because the public practice API returns JSON.
+
+## Configuration
+
+Runtime configuration is maintained in:
+
+src/test/resources/config.properties
+
+The configuration contains the browser, base URL, and standard SauceDemo test credentials.
+
+The framework supports:
+
+- Chrome
+- Firefox
+
+No browser-driver download or local driver path is required; Selenium Manager resolves the appropriate browser driver automatically.
 
 ## Prerequisites
 
 - JDK 17
-- Maven 3.9+ available on `PATH`
-- Google Chrome (default) or Mozilla Firefox
+- Maven 3.9+
+- Google Chrome and/or Mozilla Firefox
+- Git
 
-No browser-driver download or local driver path is required; Selenium Manager resolves the browser driver.
+Verify Java:
+
+java -version
+
+Verify Maven:
+
+mvn -version
 
 ## Run the complete suite
 
-```bash
+Run the complete UI, Cucumber, and REST Assured suite:
+
 mvn clean test
-```
 
 Run the same complete suite in Firefox:
 
-```bash
 mvn clean test -Dbrowser=firefox
-```
 
-`testng.xml` is the central batch entry point. It includes every TestNG regression class, the Cucumber TestNG runner, and the REST Assured tests. Browser, base URL, and standard SauceDemo credentials are maintained in `src/test/resources/config.properties`.
+testng.xml is the central batch entry point. It includes the TestNG regression classes, the Cucumber TestNG runner, and the REST Assured tests.
 
-## Reports and screenshots
+Browser, base URL, and standard SauceDemo credentials are maintained in:
 
-- TestNG/Surefire reports: `target/surefire-reports/` (including `index.html`, `emailable-report.html`, and `testng-results.xml`)
-- Cucumber HTML report: `target/cucumber-reports/cucumber.html`
-- Extent HTML report: `target/extent-reports/shopflow-test-report.html`
-- Failure screenshots: `screenshots/`
-
-Screenshots have collision-resistant names and are captured safely only when a driver exists. Failed Selenium screenshots are attached to the Extent report when available. The report records test status, duration, failures, and TestNG groups. Generated reports, screenshots, IDE settings, and Selenium metadata are excluded by `.gitignore`.
+src/test/resources/config.properties
 
 ## Parallel execution
 
-The independent Selenium regression classes run in parallel by TestNG (`parallel="classes"`, three threads). Each `BaseTest` instance creates and quits its own WebDriver, so browser sessions are not shared. Cucumber and REST Assured stay sequential to keep scenario state and calls to the public simulated API stable.
+Independent Selenium regression classes run in parallel through TestNG using:
 
-## API Testing & Postman
+parallel="classes"
 
-The API practice material is deliberately separate from the UI framework: see [api/API_PRACTICE.md](api/API_PRACTICE.md) and [postman/ShopFlow-API-Practice.postman_collection.json](postman/ShopFlow-API-Practice.postman_collection.json). It uses [JSONPlaceholder](https://jsonplaceholder.typicode.com/), a public fake REST API. Its write operations are simulated: POST, PUT, and DELETE responses do not change persistent production data.
+with three threads.
 
-API testing checks client-to-backend communication without the browser UI. REST generally exposes JSON resources over HTTP; SOAP uses structured XML messages and contract-based web-service conventions. CRUD means Create, Read, Update, and Delete, commonly represented by POST, GET, PUT, and DELETE.
+Each BaseTest instance creates and quits its own WebDriver, so browser sessions are not shared.
 
-The collection demonstrates collection GET, a single-resource GET with a path parameter (`/posts/{{postId}}`), a filtered GET with a query parameter (`?userId={{userId}}`), JSON request payloads for POST/PUT, request headers, response-body checks, response-header checks, and a negative 404 request. Headers carry request or response metadata; a payload is the JSON body sent with a request.
+Cucumber and REST Assured remain sequential to keep scenario state and calls to the public simulated API stable.
 
-HTTP status families are `1xx` informational, `2xx` success, `3xx` redirection, `4xx` client error, and `5xx` server error. The examples expect 200, 201, and 404 responses.
+## Reports and screenshots
 
-To use the collection, open Postman, select **Import**, and choose `postman/ShopFlow-API-Practice.postman_collection.json`. It defines `{{baseUrl}}`, `{{postId}}`, and `{{userId}}` variables; edit their current values at collection level if needed. Run a request individually or use Collection Runner to execute all verification scripts.
+### TestNG / Surefire reports
 
-## REST Assured API Automation
+target/surefire-reports/
 
-The REST Assured TestNG suite automates the same JSONPlaceholder scenarios as the Postman collection from Java. REST Assured uses BDD-style `given()`, `when()`, `then()`, and `and()` calls: `given()` prepares the request, `when()` invokes an HTTP method, and `then()` verifies the response.
+Including:
 
-Shared configuration is in `com.automation.api.base.ApiConfig` as reusable `RequestSpecification` and `ResponseSpecification` builders; they define the base URI, common `Accept` header, and JSON response-header expectation. The tests demonstrate path/query parameters, request and failure logging, status/body/header assertions with Hamcrest, and JSONPath extraction. The `Post` POJO demonstrates serialization (a Java object sent as JSON) and deserialization (a JSON response mapped back to a Java object).
+- index.html
+- emailable-report.html
+- testng-results.xml
 
-Run all UI, Cucumber, and REST Assured tests together with:
+### Cucumber HTML report
 
-```bash
-mvn clean test
-```
+target/cucumber-reports/cucumber.html
 
-JSONPlaceholder supports the JSON payload examples used here. It does not provide a safe authentication endpoint, so Basic Auth and OAuth are not simulated or supplied with invented credentials. In REST Assured, Basic Auth is normally configured with `auth().basic(user, password)` and OAuth with `auth().oauth2(token)` using securely supplied credentials or tokens. XML payload support is likewise not demonstrated because this public practice API returns JSON only.
+### Extent HTML report
+
+target/extent-reports/shopflow-test-report.html
+
+### Failure screenshots
+
+screenshots/
+
+Screenshots are captured safely only when a WebDriver instance exists.
+
+Failed Selenium screenshots are attached to the Extent report when available.
+
+The report records:
+
+- Test status
+- Duration
+- Failures
+- TestNG groups
+- Execution details
+
+Generated reports, screenshots, IDE settings, and Selenium metadata are excluded from version control where appropriate.
+
+## Test results
+
+The complete Maven suite has been successfully validated with:
+
+24 Tests
+24 Passed
+0 Failed
+0 Errors
+0 Skipped
+
+BUILD SUCCESS
+
+The suite includes UI TestNG automation, Cucumber BDD execution, and REST Assured API automation.
 
 ## Example automation flow
 
-`LoginPage → ProductsPage → CartPage → CheckoutPage → OrderConfirmationPage`
+LoginPage
+    ↓
+ProductsPage
+    ↓
+ProductDetailsPage
+    ↓
+CartPage
+    ↓
+CheckoutPage
+    ↓
+OrderConfirmationPage
+
+## Project highlights
+
+- Java 17 automation framework
+- Selenium WebDriver
+- Page Object Model
+- TestNG
+- Cucumber / Gherkin
+- REST Assured
+- Postman
+- Maven
+- Chrome and Firefox support
+- Parallel Selenium execution
+- TestNG groups
+- Priorities
+- Parameters
+- DataProviders
+- Assertions
+- Test dependencies
+- ExtentReports
+- Failure screenshots
+- Surefire reporting
+- Reusable driver management
+- Centralized configuration
+- UI + API automation in one project
+- 24/24 verified Maven tests passing
+
+## GitHub
+
+ShopFlow Automation:
+https://github.com/Gagan-Mittal-afk/shopflow-automation
