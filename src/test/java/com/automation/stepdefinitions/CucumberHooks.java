@@ -17,7 +17,8 @@ public class CucumberHooks {
     @Before
     public void startBrowser() throws IOException {
         ConfigReader config = new ConfigReader();
-        WebDriver driver = DriverFactory.create(config.getProperty("browser"));
+        String browser = System.getProperty("browser", config.getProperty("browser"));
+        WebDriver driver = DriverFactory.create(browser);
         CucumberDriverContext.setDriver(driver);
         driver.manage().window().maximize();
         driver.get(config.getProperty("url"));
